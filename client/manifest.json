@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "permissions": [
+    "identity",
+    "storage"
+  ],
+  "oauth2": {
+    "client_id": "113439342527-kliuhrfour83snj76k0fsuch50gu5rta.apps.googleusercontent.com",
+    "scopes":["email","profile","openid"]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:3000 http://localhost:3001; object-src 'self'"
+  }
+ 
+} 

@@ -1,0 +1,50 @@
+{
+  "name": "covlet",
+  "description": "A Chrome extension that reads job descriptions on platforms like LinkedIn, Wellfound, and Internshala, then generates personalized cover letters designed to get you noticed.",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "test": "vitest --coverage"
+  },
+  "dependencies": {
+    "@mistralai/mistralai": "^1.1.0",
+    "@react-oauth/google": "^0.12.1",
+    "@supabase/supabase-js": "^2.46.1",
+    "dotenv": "^16.4.5",
+    "file-saver": "^2.0.5",
+    "framer-motion": "^12.6.3",
+    "html2pdf": "^0.0.11",
+    "jspdf": "^3.0.0",
+    "quill-to-pdf": "^1.0.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^7.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/file-saver": "^2.0.7",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitest/coverage-v8": "^2.1.6",
+    "@wxt-dev/module-react": "^1.1.0",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.5.4",
+    "vitest": "^2.1.6",
+    "wxt": "^0.19.17"
+  }
+}
