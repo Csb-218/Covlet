@@ -1,7 +1,7 @@
 
-# ReplyIn 
+# Covlet 
 
-ReplyIn is a text generator chrome extension.
+Covlet is a text generator chrome extension.
 
 
 

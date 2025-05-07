@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
-import { MemoryRouter, Routes, Route } from "react-router-dom";
+import { MemoryRouter, Routes, Route  } from "react-router-dom";
 import { user } from "../../types";
 import Home from "../../components/popup/Home";
+import ProfileBuild from '@/components/popup/ProfileBuild';
 import Layout from '../../components/popup/Layout';
 import Landing from '../../components/popup/Landing';
 import './App.css';
 
 function App() {
   const [user, setUser] = useState<user | null>(null);
+  const [checkAuth, setCheckAuth] = useState<boolean>(false);
+
 
   const handleLogin = async () => {
-    chrome.runtime.sendMessage({ type: 'GOOGLE_LOGIN' });
+    const loggedin = await chrome.runtime.sendMessage({ type: 'GOOGLE_LOGIN' });
   };
 
   useEffect(() => {
@@ -20,7 +23,7 @@ function App() {
         setUser(result.user);
       }
     });
-  }, []);
+  }, [user,checkAuth]);
 
   if (!user) {
     return <Landing onLogin={handleLogin} />;
@@ -33,6 +36,10 @@ function App() {
           <Route
             index
             element={<Home setUser={setUser} user={user} />}
+          />
+          <Route
+            path="/profile"
+            element={<ProfileBuild />}
           />
         </Route>
       </Routes>

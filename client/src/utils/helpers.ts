@@ -27,3 +27,9 @@ export function toInputBox(text: string): string {
         .replace(/<([a-zA-Z]+)([^>]*)\/?>/g, '\n')
         .replace(/<\/([a-zA-Z]+)>/g, ' ');
 }
+
+export const formatDateForInput = (date: Date | null | string): string => {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+};

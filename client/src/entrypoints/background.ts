@@ -1,4 +1,4 @@
-import {googleLogin,listenUpdated} from '../utils/backgroundFunctions'
+import {googleLogin,listenUpdatedWellfound , listenUpdatedInternshala ,listenUpdatedLinkedIn} from '../utils/backgroundFunctions'
 
 export default defineBackground(async () => {
   console.log('Hello csb !', { id: browser.runtime.id });
@@ -10,7 +10,10 @@ export default defineBackground(async () => {
   var isContentScriptReady: boolean = true;
 
   // Listen to new tab updation 
-  chrome.tabs.onUpdated.addListener(listenUpdated);
+  chrome.tabs.onUpdated.addListener(listenUpdatedWellfound);
+  chrome.tabs.onUpdated.addListener(listenUpdatedInternshala);
+  chrome.tabs.onUpdated.addListener(listenUpdatedLinkedIn);
+
 
   // Handle tab closure
   chrome.tabs.onRemoved.addListener((tabId) => {

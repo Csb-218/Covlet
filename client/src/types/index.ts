@@ -18,4 +18,43 @@ export type user = {
     verified_email: boolean
 }
 
+export interface IProfileSchema {
+    personal: {
+      name: string;
+      email: string;
+      phone: string;
+      linkedin: string;
+    };
+    summary: string;
+    experience: Array<{
+      title: string;
+      company: string;
+      startDate: Date | string ;
+      endDate: Date | string | null;
+      responsibilities: string;
+      achievements: string;
+    }>;
+    education: Array<{
+      degree: string;
+      institution: string;
+      startDate: Date | string;
+      endDate: Date | string | null;
+      coursework: string;
+    }>;
+    skills: {
+      technical: string[];
+      soft: string[];
+    };
+    certifications: Array<{
+      name: string;
+      year: string;
+    }>;
+    languages: string[];
+    projects: Array<{
+      name: string;
+      description: string;
+      link?: string;
+    }>;
+  }
+
 

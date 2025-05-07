@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import {brand_logo_2} from "@/assets"
-import {Outlet} from "react-router-dom"
+import {Outlet,useNavigate,useLocation} from "react-router-dom"
 
 const Layout = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const showBackButton = location.pathname !== '/';
   return (
     <>
     <div className="bg-transparent">
@@ -30,6 +33,15 @@ const Layout = () => {
         <p className="text-gray-600 mb-8">
           Your AI-powered cover letter assistant that helps you stand out
         </p>
+       {
+        showBackButton &&
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
+          aria-label="Go back"
+        > ← Back</button>
+       }
+        
  
     
     </div>

@@ -1,18 +1,21 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type FC } from "react";
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { getCandidate } from "../../server/API";
+import { getCandidate } from "../../services/Mistral";
 import { convert_to_readable, convert_to_readable_input, toInputBox, convert_to_downloadable_pdf } from "@/utils/helpers";
 import { JD } from '@/types'
 import { jsPDF } from "jspdf";
 import QuillToPdf from "quill-to-pdf";
 import { saveAs } from "file-saver";
 import {mistral} from "@/utils/mistral"
+import { getResumeDataFromDB } from "@/services/server";
 
+interface AppProps {
+  JD: string;
+  messageBox: HTMLElement;
+}
 
-
-
-const App = ({ JD, messageBox }: JD) => {
+const App: FC<AppProps> = ({ JD, messageBox }) => {
 
   const [content, setContent] = useState<string>(`Crafting your letter ... \n`);
   const [rawContent, setRawContent] = useState<string>('')
@@ -25,7 +28,6 @@ const App = ({ JD, messageBox }: JD) => {
   let cleanResponse: string;
 
   async function generateChatResponseStream(data: any, JD: string, client: any) {
-
     try {
       console.log(JD, data)
 
@@ -74,17 +76,17 @@ const App = ({ JD, messageBox }: JD) => {
       setStreaming(false)
       return cleanResponse
     }
-
-
-
   }
 
-  async function generateCover() {
+
+
+async function generateCover() {
 
     const user = await chrome.storage.local.get(['user'])
     const email = user.user.email
-    const candidate = await getCandidate(email)
-    // console.log(candidate)
+    // const candidate = await getCandidate(email)
+    const candidate = await getResumeDataFromDB(email)
+    console.log(candidate)
 
     const result = await generateChatResponseStream(candidate, JD, mistral)
     console.log(result)
@@ -93,13 +95,15 @@ const App = ({ JD, messageBox }: JD) => {
     const readable = convert_to_readable(readable_input)
     setContent(readable)
 
-  }
+}
 
 
 
   useEffect(() => {
 
     generateCover()
+    console.log('JD', JD)
+    console.log("messageBox", messageBox)
 
   }, [JD])
 
@@ -268,3 +272,4 @@ const App = ({ JD, messageBox }: JD) => {
 };
 
 export default App
+export type { AppProps };
