@@ -39,7 +39,7 @@ function App() {
           />
           <Route
             path="/profile"
-            element={<ProfileBuild />}
+            element={<ProfileBuild setUser={setUser} user={user}/>}
           />
         </Route>
       </Routes>
