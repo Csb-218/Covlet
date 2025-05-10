@@ -6,8 +6,6 @@ export const addResume = async (req: Request, res: Response) => {
   try {
     // Extract resume data from the nested structure
     const resumeData: IProfileSchema = req.body.resume;
-    
-    
      
     if (!resumeData) {
       return res.status(400).json({
@@ -99,6 +97,41 @@ export const deleteResume = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error deleting resume from database',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+};
+
+export const updateResume = async (req: Request, res: Response) => {
+  try {
+    const email = req.params.email;
+    const resumeData: IProfileSchema = req.body;
+    console.log('Resume data:', resumeData);
+    // Find and update resume by email
+    const updatedResume = await Resume.findOneAndUpdate(
+      {'personal.email': email},
+      resumeData,
+      { new: true }
+    );
+
+    if (!updatedResume) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resume not found'
+      });
+    }
+    console.log('Updated resume:', updatedResume);
+    res.status(201).json({
+      success: true,
+      message: 'Resume updated successfully',
+      data: updatedResume
+    });
+
+  } catch (error) {
+    console.error('Error updating resume:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating resume in database',
       error: error instanceof Error ? error.message : 'Unknown error'
     });
   }
