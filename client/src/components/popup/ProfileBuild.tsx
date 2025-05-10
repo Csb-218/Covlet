@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addResumeDataToDB } from "@/services/server";
+import { addResumeDataToDB , getResumeDataFromDB , updateResumeDataInDB} from "@/services/server";
 import { z } from 'zod';
 import { sample_resume_json } from "@/assets";
-import { IProfileSchema } from '@/types';
+import { IProfileSchema,user } from '@/types';
+
 import { formatDateForInput } from "@/utils/helpers"
 
 // Form validation schema
@@ -83,12 +84,18 @@ const profileSchema = z.object({
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 
-const ProfileBuild: React.FC = () => {
+const ProfileBuild = ({
+  setUser,
+  user,
+}: {
+  setUser: React.Dispatch<React.SetStateAction<user | null>>;
+  user: user;
+}) => {
+
   const [isLoadingSample, setIsLoadingSample] = useState(false);
+  const [resumeData, setResumeData] = useState<IProfileSchema | null>(null);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const resumeData:IProfileSchema = location.state?.resumeData;
 
   const {
     register,
@@ -189,13 +196,24 @@ const ProfileBuild: React.FC = () => {
         }))
       };
       console.log("Formatted Data:", formattedData);
-      const response = await addResumeDataToDB(formattedData);
+      const response = await updateResumeDataInDB(formattedData, user.email);
     } catch (error) {
       console.error(error);
     } finally {
       navigate("/")
     }
   };
+
+  useEffect(() => {
+      getResumeDataFromDB(user.email)
+        .then((response) => {
+          setResumeData(response);
+        })
+        .catch((error) => {
+
+          console.error("Error fetching resume data:", error);
+        });
+  },[])
 
   useEffect(() => {
     if (resumeData) {
@@ -206,30 +224,18 @@ const ProfileBuild: React.FC = () => {
         ...resumeData,
         experience: resumeData.experience.map(exp => ({
           ...exp,
-          startDate: formatDateForInput(exp.startDate),
-          endDate:  formatDateForInput(exp.endDate) ,
+         startDate: new Date(exp.startDate),
+         endDate: exp.endDate ? new Date(exp.endDate) : null,
         })),
         education: resumeData.education.map(edu => ({
           ...edu,
-          startDate: formatDateForInput(edu.startDate),
-          endDate: formatDateForInput(edu.endDate),
+          startDate: new Date(edu.startDate),
+          endDate: edu.endDate ? new Date(edu.endDate) : null,
         }))
       };
 
         // Reset form with formatted data
-        reset({
-          ...formattedData,
-          experience: formattedData.experience.map(exp => ({
-            ...exp,
-            startDate: new Date(exp.startDate),
-            endDate: exp.endDate ? new Date(exp.endDate) : null,
-          })),
-          education: formattedData.education.map(edu => ({
-            ...edu,
-            startDate: new Date(edu.startDate),
-            endDate: edu.endDate ? new Date(edu.endDate) : null,
-          })),
-        });
+        reset(formattedData);
 
         // Handle arrays separately if needed
         if (resumeData.skills?.technical) {
@@ -251,7 +257,7 @@ const ProfileBuild: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Build Your Profile</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Edit Your Profile</h1>
         <button
           type="button"
           onClick={loadSampleResume}
@@ -389,6 +395,7 @@ const ProfileBuild: React.FC = () => {
                     <div className="space-y-2">
                       <input
                         type="date"
+                        value={formatDateForInput(watch(`experience.${index}.endDate`))}
                         {...register(`experience.${index}.endDate`)}
                         // min={watch(`experience.${index}.startDate`) ? (watch(`experience.${index}.startDate`) as Date).toISOString().split('T')[0] : ''}
                         // max={new Date().toISOString().split('T')[0]}
@@ -566,6 +573,7 @@ const ProfileBuild: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                     <input
                       type="date"
+                       value={formatDateForInput(watch(`education.${index}.startDate`))}
                       {...register(`education.${index}.startDate`)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                     />
@@ -574,6 +582,7 @@ const ProfileBuild: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                     <input
                       type="date"
+                      value={formatDateForInput(watch(`education.${index}.endDate`))}
                       {...register(`education.${index}.endDate`)}
                       className="w-full p-2 border border-gray-300 rounded-md"
                     />
