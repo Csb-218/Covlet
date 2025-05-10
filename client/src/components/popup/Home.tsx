@@ -54,7 +54,7 @@ const Home = ({
         - An AI text generator
       </h2>
       <span>
-        Build your 
+        Edit your 
         <NavLink to={"/profile"} className="text-blue-500 hover:underline">
            profile
         </NavLink>
