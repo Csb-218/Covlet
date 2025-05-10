@@ -28,8 +28,8 @@ const ResumeSchema = new Schema<IResume>({
     coursework: { type: String, required: true }
   }],
   skills: {
-    technical: [{ type: String }],
-    soft: [{ type: String }]
+    technical: [{ type: String ,required: true}],
+    soft: [{ type: String ,required: true}]
   },
   certifications: [{
     name: { type: String, required: true },
