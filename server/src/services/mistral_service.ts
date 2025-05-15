@@ -1,66 +1,66 @@
-import { mistral } from "../config/mistral"
+import mistral  from "../config/mistral"
 import z from "zod"
 
-export async function uploadFile(file:File | Blob) {
-    try {
-        const uploaded_pdf = await mistral.files.upload({
-            file: file,
-            purpose: "ocr"
-        });
+// export async function uploadFile(file:File | Blob) {
+//     try {
+//         const uploaded_pdf = await mistral.files.upload({
+//             file: file,
+//             purpose: "ocr"
+//         });
 
-        return uploaded_pdf;
-    } catch (e) {
-        console.error("Error uploading file:", e);
-        throw new Error("File upload failed");
-    }
-}
+//         return uploaded_pdf;
+//     } catch (e) {
+//         console.error("Error uploading file:", e);
+//         throw new Error("File upload failed");
+//     }
+// }
 
-export async function getFile(fileId: string) {
-    try {
-        const fileContents = await mistral.files.retrieve({
-            fileId: fileId
-        });
+// export async function getFile(fileId: string) {
+//     try {
+//         const fileContents = await mistral.files.retrieve({
+//             fileId: fileId
+//         });
 
-        return fileContents;
+//         return fileContents;
 
-    } catch (e) {
-        console.error("Error getting file:", e);
-        throw new Error("File retrieval failed");
-    }
-}
+//     } catch (e) {
+//         console.error("Error getting file:", e);
+//         throw new Error("File retrieval failed");
+//     }
+// }
 
-export async function getSignedUrl(fileId: string) {
-    try {
-        const signedUrl = await mistral.files.getSignedUrl({
-            fileId: fileId
-        });
+// export async function getSignedUrl(fileId: string) {
+//     try {
+//         const signedUrl = await mistral.files.getSignedUrl({
+//             fileId: fileId
+//         });
 
-        return signedUrl;
+//         return signedUrl;
 
-    } catch (e) {
-        console.error("Error getting signed URL:", e);
-        throw new Error("Signed URL retrieval failed");
-    }
-}
+//     } catch (e) {
+//         console.error("Error getting signed URL:", e);
+//         throw new Error("Signed URL retrieval failed");
+//     }
+// }
 
-export async function getOCRResult(signedUrl:string){
-    try {
-        const ocrResult = await mistral.ocr.process({
-            model:"mistral-ocr-latest",
-            document:{
-                type:"document_url",
-                documentUrl:signedUrl
-            }
-        });
+// export async function getOCRResult(signedUrl:string){
+//     try {
+//         const ocrResult = await mistral.ocr.process({
+//             model:"mistral-ocr-latest",
+//             document:{
+//                 type:"document_url",
+//                 documentUrl:signedUrl
+//             }
+//         });
 
-        return ocrResult;
+//         return ocrResult;
 
-    } catch (e) {
-        console.error("Error getting OCR result:", e);
-        throw new Error("OCR result retrieval failed");
-    }
+//     } catch (e) {
+//         console.error("Error getting OCR result:", e);
+//         throw new Error("OCR result retrieval failed");
+//     }
 
-}
+// }
 
 export async function returnResumeFilledSchema(markdown:string){
 
@@ -120,7 +120,7 @@ export async function returnResumeFilledSchema(markdown:string){
             responseFormat:profileSchema 
         });
 
-        return filledSchema?.choices?.[0]?.message?.parsed ?? null;
+        return filledSchema?.choices?.[0]?.message?.parsed 
 
     } catch (e) {
         console.error("Error getting filled schema:", e);
@@ -128,3 +128,10 @@ export async function returnResumeFilledSchema(markdown:string){
     }
 }
 
+export default {
+    // uploadFile,
+    // getFile,
+    // getSignedUrl,
+    // getOCRResult,
+    returnResumeFilledSchema
+}
