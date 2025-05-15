@@ -13,6 +13,9 @@ export const fileReadController = async (req: Request, res: Response) => {
     // Read file as buffer instead of utf-8 string
     const buffer:Buffer = fs.readFileSync(req.file.path);
 
+    // Clean up the temporary file
+    await fs.promises.unlink(req.file.path);
+
     // extract data from the PDF
     const data:Result = await PdfParse(buffer);
 
@@ -33,9 +36,6 @@ export const fileReadController = async (req: Request, res: Response) => {
     console.log('PDF info:', data.info);
     console.log('PDF metadata:', data.metadata);
     console.log('PDF.js version:', data.version);
-
-    // Clean up the temporary file
-    await fs.promises.unlink(req.file.path);
 
     // get the schema from the PDF text
     const schemaResponse = await returnResumeFilledSchema(pdfText)
