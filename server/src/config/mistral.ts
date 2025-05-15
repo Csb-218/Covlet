@@ -1,9 +1,12 @@
 import { Mistral } from "@mistralai/mistralai";
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const MistralApiKey1 = process.env.WXT_MISTRAL_API_KEY1
 
-export const mistral = new Mistral({
+const mistralInstance = new Mistral({
     apiKey: MistralApiKey1
 });
+
+export default mistralInstance;
