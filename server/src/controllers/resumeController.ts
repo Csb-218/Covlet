@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
-import { Resume } from '../models/ResumeModel';
+import { Types } from 'mongoose';
+import { ResumeModel } from '../models/ResumeModel';
 import type{ IProfileSchema } from '../types';
 
 export const addResume = async (req: Request, res: Response) => {
   try {
     // Extract resume data from the nested structure
-    const resumeData: IProfileSchema = req.body.resume;
+    const resumeData: IProfileSchema = req.body;
      
     if (!resumeData) {
       return res.status(400).json({
@@ -15,7 +16,8 @@ export const addResume = async (req: Request, res: Response) => {
     }
 
     // check if resume is already there
-    const existingResume = await Resume.findOne({'personal.email': resumeData.personal.email});
+    const existingResume = await ResumeModel.findOne({'personal.email': resumeData.personal.email});
+
     if (existingResume) {
       return res.status(400).json({
         success: false,
@@ -23,19 +25,19 @@ export const addResume = async (req: Request, res: Response) => {
       });
     }
 
-    console.log('Resume data:', resumeData);
-    
+    // console.log('Resume data:', resumeData);
+
+    const newResume = {
+      ...resumeData,
+      _id: new Types.ObjectId()
+    }
     // Create a new resume document
-    const resume = new Resume(resumeData);
-    console.log('Resume document:', resume);
-    
-    // Save to database
-    const savedResume = await resume.save();
+    await ResumeModel.create(newResume);
 
     res.status(201).json({
       success: true,
       message: 'Resume added successfully',
-      data: savedResume
+      data: newResume
     });
 
   } catch (error) {
@@ -52,7 +54,7 @@ export const getResume = async (req: Request, res: Response) => {
   try {
     const email = req.params.email;
     // Find resume by email
-    const resume = await Resume.findOne({'personal.email': email});
+    const resume = await ResumeModel.findOne({'personal.email': email});
     
     if (!resume) {
       return res.status(404).json({
@@ -80,7 +82,7 @@ export const deleteResume = async (req: Request, res: Response) => {
   try {
     const email = req.params.email;
     // Find and delete resume by email
-    const deletedResume = await Resume.findOneAndDelete({'personal.email': email});
+    const deletedResume = await ResumeModel.findOneAndDelete({'personal.email': email});
     if (!deletedResume) {
       return res.status(404).json({
         success: false,
@@ -108,7 +110,7 @@ export const updateResume = async (req: Request, res: Response) => {
     const resumeData: IProfileSchema = req.body;
     console.log('Resume data:', resumeData);
     // Find and update resume by email
-    const updatedResume = await Resume.findOneAndUpdate(
+    const updatedResume = await ResumeModel.findOneAndUpdate(
       {'personal.email': email},
       resumeData,
       { new: true }
