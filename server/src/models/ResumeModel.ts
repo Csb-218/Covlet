@@ -7,7 +7,7 @@ interface IResume extends Document, IProfileSchema {}
 const ResumeSchema = new Schema<IResume>({
   personal: {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true , unique: true },
     phone: { type: String, required: true },
     linkedin: { type: String, required: true }
   },
@@ -45,4 +45,4 @@ const ResumeSchema = new Schema<IResume>({
   timestamps: true
 });
 
-export const Resume = mongoose.model<IResume>('Resume', ResumeSchema);
+export const ResumeModel = mongoose.model<IResume>('Resume', ResumeSchema);
