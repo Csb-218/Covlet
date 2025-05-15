@@ -108,7 +108,7 @@ export const updateResume = async (req: Request, res: Response) => {
   try {
     const email = req.params.email;
     const resumeData: IProfileSchema = req.body;
-    console.log('Resume data:', resumeData);
+
     // Find and update resume by email
     const updatedResume = await ResumeModel.findOneAndUpdate(
       {'personal.email': email},
@@ -122,7 +122,7 @@ export const updateResume = async (req: Request, res: Response) => {
         message: 'Resume not found'
       });
     }
-    console.log('Updated resume:', updatedResume);
+
     res.status(201).json({
       success: true,
       message: 'Resume updated successfully',
