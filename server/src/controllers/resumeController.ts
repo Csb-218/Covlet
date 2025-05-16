@@ -8,7 +8,7 @@ export const addResume = async (req: Request, res: Response) => {
     // Extract resume data from the nested structure
     const resumeData: IProfileSchema = req.body;
      
-    if (!resumeData) {
+    if (!resumeData || Object.keys(resumeData).length === 0) {
       return res.status(400).json({
         success: false,
         message: 'Resume data is required'
@@ -45,7 +45,7 @@ export const addResume = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error adding resume to database',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error && error.message 
     });
   }
 };
@@ -73,7 +73,7 @@ export const getResume = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error fetching resume from database',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error && error.message 
     });
   }
 };
@@ -99,7 +99,7 @@ export const deleteResume = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error deleting resume from database',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error && error.message
     });
   }
 };
@@ -134,7 +134,7 @@ export const updateResume = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Error updating resume in database',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error && error.message 
     });
   }
 };
