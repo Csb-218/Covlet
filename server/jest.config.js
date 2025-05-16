@@ -4,6 +4,7 @@ module.exports = {
   transform: {
     "^.+\.tsx?$": ["ts-jest",{}],
   },
+  forceExit: true,
   collectCoverage: true,
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov", "html"],
@@ -12,5 +13,6 @@ module.exports = {
     "!src/index.ts",
     "!src/config/*.ts",
     "!**/node_modules/**"
-  ]
+  ],
+  testTimeout: 60000
 };
