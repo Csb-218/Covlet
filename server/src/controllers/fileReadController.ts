@@ -25,9 +25,21 @@ export const fileReadController = async (req: Request, res: Response) => {
     // Check if the data contains the expected texts using RegExp.test()
     const educationRegex = /\b(education)\b/i;
     const experienceRegex = /\b(experience)\b/i;
+    const skillsRegex = /\b(skills)\b/i;
+    const projectsRegex = /\b(projects)\b/i;
+    const certificationsRegex = /\b(certifications)\b/i;
     
-    if (!educationRegex.test(data.text) || !experienceRegex.test(data.text)) {
-      return res.status(400).json({ error: 'The resume does not have education and experience' });
+    if (!educationRegex.test(data.text) || !experienceRegex.test(data.text) || !skillsRegex.test(data.text) || !projectsRegex.test(data.text) || !certificationsRegex.test(data.text)) {
+      let errorMessage = 'The resume does not have ';
+      let missingFields = [];
+      if(educationRegex.test(data.text) === false) missingFields.push('education');
+      if(experienceRegex.test(data.text) === false) missingFields.push('experience');
+      if(skillsRegex.test(data.text) === false) missingFields.push('skills');
+      if(projectsRegex.test(data.text) === false) missingFields.push('projects');
+      if(certificationsRegex.test(data.text) === false) missingFields.push('certifications');
+      errorMessage += missingFields.join(' and ');
+      
+      return res.status(400).json({ error: errorMessage });
     }
 
     // Log PDF information
