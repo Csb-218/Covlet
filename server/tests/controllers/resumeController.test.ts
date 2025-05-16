@@ -159,6 +159,23 @@ describe("Resume Controller", () => {
       expect(mockResponse.status).toHaveBeenCalledWith(201);
     });
 
+    it("should return 400 if no resume data is provided", async () => {
+      mockRequest = {
+        body: {},
+      };
+      ResumeModel.findOne = jest
+        .fn<(mockQuery: object) => any>()
+        .mockResolvedValue(null);
+        
+      await addResume(mockRequest as Request, mockResponse as Response);
+      expect(ResumeModel.findOne).not.toHaveBeenCalled();
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Resume data is required",
+      });
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+    });
+
     it("should return 400 if resume already exists", async () => {
       mockRequest = {
         body: {
