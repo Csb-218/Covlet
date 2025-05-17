@@ -171,7 +171,32 @@ describe("Resume Controller", () => {
       expect(ResumeModel.findOne).not.toHaveBeenCalled();
       expect(mockResponse.json).toHaveBeenCalledWith({
         success: false,
-        message: "Resume data is required",
+        message: "Invalid request body",
+      });
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+    });
+
+    it("should return 400 if email is not provided", async () => {
+      mockRequest = {
+        body: {
+          ...mockResumeData,
+          personal: {
+            ...mockResumeData.personal,
+            email: "",
+          },
+        },
+      };
+
+      ResumeModel.findOne = jest
+        .fn<(mockQuery: object) => any>()
+        .mockResolvedValue(null);
+
+      await addResume(mockRequest as Request, mockResponse as Response);
+
+      expect(ResumeModel.findOne).not.toHaveBeenCalled();
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        message: "Email is required",
       });
       expect(mockResponse.status).toHaveBeenCalledWith(400);
     });
