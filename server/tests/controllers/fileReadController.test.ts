@@ -51,7 +51,7 @@ describe('fileReadController', () => {
 
     // Mock file data
     mockFile = {
-      path: '/uploads/test.pdf',
+      path: '/uploads/resume_cs_bhagwant.pdf',
       mimetype: 'application/pdf',
     } as Express.Multer.File;
 
@@ -93,12 +93,12 @@ describe('fileReadController', () => {
     expect(fs.readFileSync).toHaveBeenCalledWith(mockFile.path);
     expect(fs.promises.unlink).toHaveBeenCalledWith(mockFile.path);
     expect(mockResponse.status).toHaveBeenCalledWith(400);
-    expect(mockResponse.json).toHaveBeenCalledWith({ error: 'The resume does not have education and experience' });
+    expect(mockResponse.json).toHaveBeenCalledWith({ error: 'The resume does not have education and experience and skills and projects and certifications' });
   });
 
   it('should process PDF file and return schema response', async () => {
 
-    const mockPdfText = 'Sample PDF text with education and experience';
+    const mockPdfText = 'Sample PDF text with education and experience skills and projects and certifications';
 
     const mockSchemaResponse = {
       email: 'test@example.com',
