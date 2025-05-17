@@ -7,11 +7,20 @@ export const addResume = async (req: Request, res: Response) => {
   try {
     // Extract resume data from the nested structure
     const resumeData: IProfileSchema = req.body;
-     
+    
+    // Validate the resume data
     if (!resumeData || Object.keys(resumeData).length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'Resume data is required'
+        message: 'Invalid request body'
+      });
+    }
+
+    // Check if the email is provided
+    if (!resumeData.personal || !resumeData.personal.email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
       });
     }
 
@@ -108,6 +117,14 @@ export const updateResume = async (req: Request, res: Response) => {
   try {
     const email = req.params.email;
     const resumeData: IProfileSchema = req.body;
+
+    // Validate the resume data
+    if (!resumeData || Object.keys(resumeData).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid request body'
+      });
+    }
 
     // Find and update resume by email
     const updatedResume = await ResumeModel.findOneAndUpdate(
