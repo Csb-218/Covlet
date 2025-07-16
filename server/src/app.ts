@@ -1,13 +1,19 @@
 import express from 'express';
 import fileRoutes from './routes/fileRoutes';
-import resumeRoutes from './routes/resumeRoutes';  // Add this line
+import resumeRoutes from './routes/resumeRoutes';  
 import cors from 'cors';
+import { config } from 'dotenv';
+config(); // Load environment variables from .env file
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(cors({
+  origin: process.env.ORIGIN, // Allow only localhost
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allow specific HTTP methods
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));
 
 // Routes
 app.get('/', (req, res) => {
@@ -15,6 +21,6 @@ app.get('/', (req, res) => {
 });
 // File upload and read routes
 app.use('/read', fileRoutes);
-app.use('/resume', resumeRoutes);  // Add this line
+app.use('/resume', resumeRoutes); 
 
 export default app;
