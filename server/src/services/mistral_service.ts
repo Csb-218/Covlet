@@ -1,5 +1,5 @@
 import mistral  from "../config/mistral"
-import z from "zod"
+import {z} from "zod"
 
 // export async function uploadFile(file:File | Blob) {
 //     try {

@@ -12,8 +12,7 @@ describe("File Upload and Read API", () => {
 
     const response = await request(app)
       .post("/read")
-      .attach("file", "uploads/resume_cs_bhagwant.pdf"); // Adjust the path to your test PDF file
-
+      .attach("file", "uploads/resume_cs_bhagwant.pdf"); 
     expect(response.status).toBe(200);
     expect(response.body).toBeDefined();
     expect(response.body).toHaveProperty("experience");
