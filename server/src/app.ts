@@ -9,11 +9,21 @@ const app = express();
 
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(cors({
-  origin: process.env.ORIGIN, // Allow only localhost
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allow specific HTTP methods
-  credentials: true // Allow credentials (cookies, authorization headers, etc.)
-}));
+
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    /^chrome-extension:\/\/.*$/, // Allow any Chrome extension
+    /^moz-extension:\/\/.*$/,    // Allow any Firefox extension (optional)
+  ],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true,
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions)); // Enable CORS with specified options
 
 // Routes
 app.get('/', (req, res) => {
