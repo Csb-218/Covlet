@@ -14,7 +14,7 @@ export const createUI = (ctx: ContentScriptContext, jobData: JobData) => {
   return createShadowRootUi(ctx, {
     name: "generative-text-editor-modal",
     position: "inline",
-    anchor: "body",
+    anchor: "body", 
     append: "first",
     onMount: (container) => {
       console.log("Mounting UI in shadow DOM");
