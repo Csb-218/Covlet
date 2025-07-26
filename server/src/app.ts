@@ -15,7 +15,7 @@ const corsOptions = {
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    "https://wellfound.com/*",
+    /^https:\/\/(.*\.)?wellfound\.com$/,
     /^chrome-extension:\/\/.*$/, // Allow any Chrome extension
     /^moz-extension:\/\/.*$/,    // Allow any Firefox extension (optional)
   ],
