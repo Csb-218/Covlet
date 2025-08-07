@@ -41,7 +41,7 @@ export default function HomePage({ onJoinWaitlist, onLearnMore }: HomePageProps)
             <div className="relative">
               <div className="bg-white rounded-2xl shadow-2xl p-4 transform rotate-3 hover:rotate-0 transition-transform duration-300">
                 <img 
-                  src="/Screen Recording 2025-08-03 at 3.43.31 PM.gif" 
+                  src="/ezgif.com-video-to-gif-converter.gif" 
                   alt="Covlet Chrome Extension Demo"
                   className="w-full h-auto rounded-lg"
                 />
