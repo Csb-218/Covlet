@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "test": "jest --detectOpenHandles ",
     "test:coverage": "jest --coverage"

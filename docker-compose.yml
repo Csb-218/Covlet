@@ -1,0 +1,30 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodbcontainer_2
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  user_app:
+    build: .
+    image: user_app
+    container_name: csb_2
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
+    environment:
+      DB_URL: 'mongodb://mongodbcontainer_2:27017/myDatabase'  # Updated to match container name
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
