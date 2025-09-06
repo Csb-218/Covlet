@@ -65,7 +65,8 @@
             .then(async(response) => {
               let user = await response.json()
               chrome.storage.local.set({ user});
-              return 
+              sendResponse({message:"Login Successful"})
+              return true
             })
             .catch(error => {
               sendResponse({ error: error.message });

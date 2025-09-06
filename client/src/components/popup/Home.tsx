@@ -3,14 +3,14 @@ import { user } from "../../types";
 import ResumeUploader from "./ResumeUploader";
 import { NavLink } from "react-router-dom";
 import { getResumeDataFromDB } from "@/services/server";
+import {floating_robot} from "@/assets"
 
-const Home = ({
-  setUser,
-  user,
-}: {
+interface props{
   setUser: React.Dispatch<React.SetStateAction<user | null>>;
   user: user;
-}) => {
+}
+
+const Home = ({ setUser, user}: props) => {
 
   const [isResumeAvailable, setIsResumeAvailable] = React.useState<boolean>(false);
 
@@ -40,7 +40,7 @@ const Home = ({
   return (
     <div className="p-4">
       <p id="div" className="text-3xl">
-        Hi {user.given_name} !
+        Hello {user.given_name} !
       </p>
       <h2>
         {" "}

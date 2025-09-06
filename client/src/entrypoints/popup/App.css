@@ -4,5 +4,15 @@
   text-align: center;
   max-width: 500px;
   min-width: 350px;
+  overflow: hidden;
 }
+
+.root::-webkit-scrollbar{
+  display: none;
+}
+
+.app::-webkit-scrollbar{
+  display: none;
+}
+
 

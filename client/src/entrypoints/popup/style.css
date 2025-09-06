@@ -12,13 +12,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  
+}
+
+:root::-webkit-scrollbar{
+  display: none
 }
 
 body {
-  @apply p-6 bg-gradient-to-br from-emerald-50 to-teal-100;
+  @apply bg-gradient-to-br from-emerald-50 to-teal-100;
   min-height: 100vh;
   margin: 0;
 }
+
 
 
 

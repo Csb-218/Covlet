@@ -11,21 +11,21 @@ export default function SpinnerXlBasicHalf() {
         aria-labelledby="title-04a desc-04a"
         aria-live="polite"
         aria-busy="true"
-        className="animate h-10 w-10 animate-spin"
+        className="animate h-6 w-6 animate-spin"
       >
-        <title id="title-04a">Reading Resume</title>
+        <title id="title-04a">Processing ...</title>
         <desc id="desc-04a">wait a while</desc>
         <circle
           cx="12"
           cy="12"
           r="10"
-          className="stroke-slate-200"
+          className="stroke-emerald-500"
           strokeWidth="4"
         />
         <path
           d="M12 22C14.6522 22 17.1957 20.9464 19.0711 19.0711C20.9464 17.1957 22 14.6522 22 12C22 9.34784 20.9464 6.8043 19.0711 4.92893C17.1957 3.05357 14.6522 2 12 2"
-          className="stroke-emerald-500"
-          strokeWidth="4"
+          className="stroke-slate-100"
+          strokeWidth="3"
         />
       </svg>
       {/*<!-- End Basic xl sized 1/2 spinner  --> */}

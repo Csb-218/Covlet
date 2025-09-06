@@ -3,6 +3,7 @@ import linkedin from "./platforms/linkedin.svg";
 import gmail from "./platforms/gmail.png";
 import internshala from "./platforms/internshala.jpeg";
 import brand_logo_2 from "./brand_logo_2.svg";
+import floating_robot from "./floating_robot.png";  
 import generateIcon from '~/assets/Frame.svg';
 import resume from "./resume_cs_bhagwant.pdf"
 const sample_resume_json = {
@@ -108,6 +109,7 @@ export {
   gmail,
   internshala,
   brand_logo_2,
+  floating_robot,
   sample_resume_json,
   magicIcon,
   resume

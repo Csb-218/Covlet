@@ -8,12 +8,19 @@ import Landing from '../../components/popup/Landing';
 import './App.css';
 
 function App() {
-  const [user, setUser] = useState<user | null>(null);
-  const [checkAuth, setCheckAuth] = useState<boolean>(false);
+  
+   const [user, setUser] = useState<user | null>(null);
+   const [isLoggingState, setLoggingState] = useState<boolean>(false);
 
-
-  const handleLogin = async () => {
-    const loggedin = await chrome.runtime.sendMessage({ type: 'GOOGLE_LOGIN' });
+   const handleLogin = async () => {
+    try{
+      setLoggingState(true)
+      const loggedin = await chrome.runtime.sendMessage({ type: 'GOOGLE_LOGIN' });
+    }catch(error){
+      console.log(error)
+    }finally{
+      setLoggingState(false)
+    }
   };
 
   useEffect(() => {
@@ -23,10 +30,10 @@ function App() {
         setUser(result.user);
       }
     });
-  }, [user,checkAuth]);
+  }, [user,isLoggingState]);
 
   if (!user) {
-    return <Landing onLogin={handleLogin} />;
+    return <Landing handleLogin={handleLogin} isLoggingState={isLoggingState} />;
   }
 
   return (
