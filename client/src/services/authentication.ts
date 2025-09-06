@@ -5,12 +5,12 @@
   
   export function googleLogin(message: Message, sender: object, sendResponse: any) {
     if (message.type === 'GOOGLE_LOGIN') {
-      console.log("hi 3");
+      // console.log("hi 3");
       try {
         const redirectUri = chrome.identity.getRedirectURL();
         const CLIENT_ID = import.meta.env.WXT_GOOGLE_CLIENT_ID;
-        console.log('Actual redirect URI:', redirectUri);
-        console.log('Client ID being used:', CLIENT_ID);
+        // console.log('Actual redirect URI:', redirectUri);
+        // console.log('Client ID being used:', CLIENT_ID);
   
         // Generate random state and nonce
         const state = Math.random().toString(36).substring(2);
@@ -25,8 +25,8 @@
         authUrl.searchParams.append('nonce', nonce);
         authUrl.searchParams.append('prompt', 'consent'); // Add prompt parameter
   
-        console.log('Full auth URL:', authUrl.toString());
-        console.log('Extension ID:', chrome.runtime.id);  // Log extension ID
+        // console.log('Full auth URL:', authUrl.toString());
+        // console.log('Extension ID:', chrome.runtime.id);  // Log extension ID
   
         chrome.identity.launchWebAuthFlow(
           {
@@ -34,7 +34,7 @@
             interactive: true
           },
           (redirectUrl) => {
-            console.log('Redirect URL received:', redirectUrl);  // Log redirect URL
+            // console.log('Redirect URL received:', redirectUrl);  // Log redirect URL
             if (chrome.runtime.lastError) {
               sendResponse({ error: chrome.runtime.lastError });
               return;
@@ -49,7 +49,7 @@
             const params = new URLSearchParams(url.hash.substring(1));
             const accessToken = params.get('access_token');
   
-            console.log(url, params,accessToken);
+            // console.log(url, params,accessToken);
   
             if (!accessToken) {
               sendResponse({ error: 'No access token' });

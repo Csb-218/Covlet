@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect, type FC } from "react";
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import ReactQuill, { Quill } from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 import { getCandidate } from "../../services/Mistral";
 import { convert_to_readable, convert_to_readable_input, toInputBox, convert_to_downloadable_pdf } from "@/utils/helpers";
 import { JD } from '@/types'
 import { jsPDF } from "jspdf";
-import QuillToPdf from "quill-to-pdf";
-import { saveAs } from "file-saver";
-import {mistral} from "@/utils/mistral"
+// import QuillToPdf from "quill-to-pdf";
+// import { saveAs } from "file-saver";
+import {mistral} from "@/config/mistral"
 import { getResumeDataFromDB } from "@/services/server";
+import { instructionEmail, instructionCover } from "@/utils/constants";
+import Editor from "@/components/content/Editor";
 
 interface AppProps {
   JD: string;
@@ -17,11 +19,12 @@ interface AppProps {
 
 const App: FC<AppProps> = ({ JD, messageBox }) => {
 
+  const [instruction,SetInstruction] = useState<"cover"|"email"|null>(null)
   const [content, setContent] = useState<string>(`Crafting your letter ... \n`);
   const [rawContent, setRawContent] = useState<string>('')
   const [hide, setHide] = useState<boolean>(false);
   const [streaming, setStreaming] = useState<boolean>(false);
-  const quillRef = useRef<ReactQuill>(null);
+  // const quillRef = useRef<ReactQuill>(null);
 
 
   let fullResponse: string = "";
@@ -38,15 +41,8 @@ const App: FC<AppProps> = ({ JD, messageBox }) => {
           content: `
           # Job description : ${JD} 
           # Candidate : ${JSON.stringify(data)} 
-          
-          # Write a suitable cover letter for the candidate using candidate's information. Don't provide a template. Tailor it according to the provided candidate's information. Use minute details such as candidate's address , phone number, candidate's name etc. to write a good cover letter. 
-          ###Caution : Wherever you find null leave that field.
-          ###Caution : Do not exceed more than 250 words
 
-          - Avoid using "null" in any part of the cover letter. Skip missing fields without mentioning them.
-          - Format the letter properly with paragraphs and line breaks.
-          - Tailor the letter according to the job description and candidate's profile.
-          _ Add available url links in the cover letter.
+          ${instruction === "cover" ?  instructionCover : instructionEmail }
           
           `
         }],
@@ -101,11 +97,11 @@ async function generateCover() {
 
   useEffect(() => {
 
-    generateCover()
+    if(instruction){generateCover()}
     console.log('JD', JD)
     console.log("messageBox", messageBox)
 
-  }, [JD])
+  }, [JD,instruction])
 
   const downloadPDF = async() => {
     // Initialize PDF document
@@ -182,7 +178,7 @@ async function generateCover() {
 
 
 
-  const handleChange = (value: string, delta: any, source: any, editor: any): void => {
+  const handleChange = (value: string): void => {
     setContent(value);
     
     // Get the text content without HTML tags
@@ -198,6 +194,52 @@ async function generateCover() {
   if (hide !== false) {
     return <></>
 
+  }
+
+  if(instruction === null){
+
+    return(
+      <>
+       {/* Modal */}
+      <div
+        id='modal backdrop'
+        className={`fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-slate-300/20 backdrop-blur-sm`}
+        style={{
+          zIndex: 500
+        }}
+        aria-labelledby="header-2a content-2a"
+        aria-modal="true"
+        tab-index="-1"
+        role="dialog">
+
+
+        <div
+          id='modal'
+          className="flex max-h-[90vh] w-6/12  flex-col gap-6 overflow-hidden rounded-xl bg-white p-6 text-slate-500 shadow-xl shadow-slate-700/10">
+
+          <div className="flex flex-col items-center gap-4">
+            <h3 className="text-lg font-medium text-slate-700 mb-2">What do you want to generate?</h3>
+            <div className="flex gap-4">
+              <button
+                className="inline-flex items-center justify-center h-10 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700"
+                onClick={() => SetInstruction("email")}
+              >
+                Email
+              </button>
+              <button
+                className="inline-flex items-center justify-center h-10 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700"
+                onClick={() => SetInstruction("cover")}
+              >
+                Cover
+              </button>
+            </div>
+          </div>
+
+         
+        </div>
+      </div>
+      </>
+    )
   }
 
 
@@ -239,12 +281,21 @@ async function generateCover() {
           {/* modal body */}
           <div id="content-2a" className="flex-1 overflow-auto">
             {/* text editor */}
-            <ReactQuill theme="snow" value={content} onChange={handleChange} ref={quillRef} />
-
-
+            {/* <ReactQuill theme="snow" value={content} onChange={handleChange} ref={quillRef} /> */}
+            <Editor content={content} onChange={handleChange} />
+            
           </div>
 
           <div className="flex justify-end gap-2">
+
+            <button
+              className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
+              onClick={async () => {
+                await navigator.clipboard.writeText(content.replace(/<br\s*\/?>/gi, '\n'));
+              }}
+            >
+              <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-clipboard-icon lucide-clipboard"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></span>
+            </button>
 
             <button
               className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded focus-visible:outline-none whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"

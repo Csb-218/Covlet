@@ -1,13 +1,11 @@
 import axios from 'axios';
 import type { IProfileSchema } from '../types';
-
+ 
 // This function uploads a resume file to the server and returns the response data.
 export async function uploadResume(file: File) {
     try{
         const formData = new FormData();
         formData.append('file', file);
-        console.log("FormData:", formData);
-        console.log("File:", file);
         const options = {
         url : "/read",
         method: "POST",
@@ -91,6 +89,6 @@ export async function getResumeDataFromDB(email: string) {
         
     } catch (error) {
         console.error("Error getting resume data from DB:", error);
-        throw new Error("Failed to get resume data from DB.");
+        throw new Error("Failed to fetch resume data from DB.");
     }
 }
