@@ -33,24 +33,30 @@ function App() {
   }, [user,isLoggingState]);
 
   if (!user) {
-    return <Landing handleLogin={handleLogin} isLoggingState={isLoggingState} />;
+    return (
+      <div className="h-full flex flex-col">
+        <Landing handleLogin={handleLogin} isLoggingState={isLoggingState} />
+      </div>
+    );
   }
 
   return (
-    <MemoryRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            index
-            element={<Home setUser={setUser} user={user} />}
-          />
-          <Route
-            path="/profile"
-            element={<ProfileBuild setUser={setUser} user={user}/>}
-          />
-        </Route>
-      </Routes>
-    </MemoryRouter>
+    <div className="h-full flex flex-col">
+      <MemoryRouter >
+        <Layout>
+          <Routes>
+            <Route
+              path="/"
+              element={<Home setUser={setUser} user={user} />}
+            />
+            <Route
+              path="/profile"
+              element={<ProfileBuild setUser={setUser} user={user}/>}
+            />
+          </Routes>
+        </Layout>
+      </MemoryRouter>
+    </div>
   );
 }
 

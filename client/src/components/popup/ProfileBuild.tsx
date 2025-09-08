@@ -91,6 +91,7 @@ const ProfileBuild = ({
   setUser: React.Dispatch<React.SetStateAction<user | null>>;
   user: user;
 }) => {
+  // console.log('ProfileBuild component mounted');
 
   const [isLoadingSample, setIsLoadingSample] = useState(false);
   const [resumeData, setResumeData] = useState<IProfileSchema | null>(null);
@@ -255,34 +256,35 @@ const ProfileBuild = ({
   }, [resumeData, reset, setValue]);
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Edit Your Profile</h1>
-        <button
-          type="button"
-          onClick={loadSampleResume}
-          disabled={isLoadingSample || isSubmitting}
-          className={`px-4 py-2 rounded-md text-sm transition-colors ${
-            isLoadingSample || isSubmitting
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 text-white'
-          }`}
-        >
-          {isLoadingSample ? 'Loading...' : 'Load Sample Resume'}
-        </button>
+    <div className="h-full overflow-y-auto relative">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-50 via-rose-50 to-orange-50 animate-gradient-xy"></div>
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-20 left-10 w-60 h-60 bg-violet-300 rounded-full mix-blend-multiply filter blur-xl animate-float"></div>
+        <div className="absolute top-40 right-10 w-60 h-60 bg-rose-300 rounded-full mix-blend-multiply filter blur-xl animate-float animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-1/3 w-60 h-60 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl animate-float animation-delay-4000"></div>
+        <div className="absolute top-1/3 right-1/3 w-40 h-40 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-spin-slow"></div>
+        <div className="absolute top-60 left-1/2 w-40 h-40 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute bottom-40 right-1/4 w-32 h-32 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl animate-bounce"></div>
       </div>
+      
+      {/* Content */}
+      <div className="p-4 space-y-6 relative z-10">
+        <div className="mb-4">
+          <h1 className="text-xl font-bold text-gray-800">Edit Your Profile</h1>
+        </div>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Personal Information */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Personal Information</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Personal Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <input
                 {...register("personal.name")}
                 type="text"
                 placeholder="Full Name"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500"
               />
               {errors.personal?.name && (
                 <p className="text-red-500 text-sm mt-1">{errors.personal.name.message}</p>
@@ -293,7 +295,7 @@ const ProfileBuild = ({
                 {...register("personal.email")}
                 type="email"
                 placeholder="Email"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500"
               />
               {errors.personal?.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.personal.email.message}</p>
@@ -304,7 +306,7 @@ const ProfileBuild = ({
                 {...register("personal.phone")}
                 type="tel"
                 placeholder="Phone Number"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500"
               />
               {errors.personal?.phone && (
                 <p className="text-red-500 text-sm mt-1">{errors.personal.phone.message}</p>
@@ -315,7 +317,7 @@ const ProfileBuild = ({
                 {...register("personal.linkedin")}
                 type="url"
                 placeholder="LinkedIn URL"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500"
               />
               {errors.personal?.linkedin && (
                 <p className="text-red-500 text-sm mt-1">{errors.personal.linkedin.message}</p>
@@ -325,13 +327,13 @@ const ProfileBuild = ({
         </section>
 
         {/* Summary Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Professional Summary</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Professional Summary</h2>
           <div>
             <textarea
               {...register("summary")}
               placeholder="Brief statement about your experience and skills..."
-              className="w-full p-2 border border-gray-300 rounded-md h-32 focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white h-32 focus:ring-2 focus:ring-blue-500"
             />
             {errors.summary && (
               <p className="text-red-500 text-sm mt-1">{errors.summary.message}</p>
@@ -340,26 +342,29 @@ const ProfileBuild = ({
         </section>
 
         {/* Work Experience */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Work Experience</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Work Experience</h2>
           {experienceFields.map((field, index) => (
-            <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-md relative">
-              <button
-                type="button"
-                onClick={() => removeExperience(index)}
-                className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-50"
-                aria-label="Delete experience"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
+            <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-md relative bg-gray-50">
+              {/* Remove Button */}
+              {experienceFields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeExperience(index)}
+                  className="absolute top-2 right-2 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
+                  aria-label="Remove experience"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input
                     {...register(`experience.${index}.title`)}
                     placeholder="Job Title"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                   {errors.experience?.[index]?.title && (
                     <p className="text-red-500 text-sm mt-1">
@@ -371,7 +376,7 @@ const ProfileBuild = ({
                   <input
                     {...register(`experience.${index}.company`)}
                     placeholder="Company Name"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -382,7 +387,7 @@ const ProfileBuild = ({
                       value={formatDateForInput(watch(`experience.${index}.startDate`))}
                       {...register(`experience.${index}.startDate`)}
                       // max={new Date().toISOString()}
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
                     />
                     {errors.experience?.[index]?.startDate && (
                       <p className="text-red-500 text-sm mt-1">
@@ -401,7 +406,7 @@ const ProfileBuild = ({
                         // max={new Date().toISOString().split('T')[0]}
                         disabled={watch(`experience.${index}.isPresent`)}
                         className={`w-full p-2 border border-gray-300 rounded-md ${
-                          watch(`experience.${index}.isPresent`) ? 'bg-gray-100' : ''
+                          watch(`experience.${index}.isPresent`) ? 'bg-gray-100' : 'bg-white'
                         }`}
                       />
                       <div className="flex items-center">
@@ -431,19 +436,20 @@ const ProfileBuild = ({
                   <textarea
                     {...register(`experience.${index}.responsibilities`)}
                     placeholder="Responsibilities"
-                    className="w-full p-2 border border-gray-300 rounded-md h-24"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white h-24"
                   />
                 </div>
                 <div>
                   <textarea
                     {...register(`experience.${index}.achievements`)}
                     placeholder="Achievements"
-                    className="w-full p-2 border border-gray-300 rounded-md h-24"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white h-24"
                   />
                 </div>
               </div>
             </div>
           ))}
+          {/* Add More Experience Button */} 
           <button
             type="button"
             onClick={() => appendExperience({ 
@@ -462,26 +468,29 @@ const ProfileBuild = ({
         </section>
         
         {/* Projects Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Projects</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Projects</h2>
           {projectFields.map((field, index) => (
-            <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-md relative">
-              <button
-                type="button"
-                onClick={() => removeProject(index)}
-                className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-50"
-                aria-label="Delete project"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
+            <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-md relative bg-gray-50">
+              {/* Remove Button */}
+              {projectFields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeProject(index)}
+                  className="absolute top-2 right-2 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
+                  aria-label="Remove project"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <input
                     {...register(`projects.${index}.name`)}
                     placeholder="Project Name"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                   {errors.projects?.[index]?.name && (
                     <p className="text-red-500 text-sm mt-1">
@@ -493,7 +502,7 @@ const ProfileBuild = ({
                   <textarea
                     {...register(`projects.${index}.description`)}
                     placeholder="Project Description"
-                    className="w-full p-2 border border-gray-300 rounded-md h-24"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white h-24"
                   />
                   {errors.projects?.[index]?.description && (
                     <p className="text-red-500 text-sm mt-1">
@@ -506,7 +515,7 @@ const ProfileBuild = ({
                     {...register(`projects.${index}.link`)}
                     type="url"
                     placeholder="Project URL (optional)"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                   {errors.projects?.[index]?.link && (
                     <p className="text-red-500 text-sm mt-1">
@@ -515,15 +524,9 @@ const ProfileBuild = ({
                   )}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => removeProject(index)}
-                className="mt-2 px-4 py-2 text-sm text-red-600 hover:text-red-800"
-              >
-                - Remove Project
-              </button>
             </div>
           ))}
+          {/* Add More Projects Button */}
           <button
             type="button"
             onClick={() => appendProject({ name: '', description: '', link: '' })}
@@ -534,26 +537,29 @@ const ProfileBuild = ({
         </section>
 
         {/* Education Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Education</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Education</h2>
           {educationFields.map((field, index) => (
-            <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-md relative">
-              <button
-                type="button"
-                onClick={() => removeEducation(index)}
-                className="absolute top-2 right-2 p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-50"
-                aria-label="Delete education"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
+            <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-md relative bg-gray-50">
+              {/* Remove Button */}
+              {educationFields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeEducation(index)}
+                  className="absolute top-2 right-2 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
+                  aria-label="Remove education"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input
                     {...register(`education.${index}.degree`)}
                     placeholder="Degree"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                   {errors.education?.[index]?.degree && (
                     <p className="text-red-500 text-sm mt-1">
@@ -565,7 +571,7 @@ const ProfileBuild = ({
                   <input
                     {...register(`education.${index}.institution`)}
                     placeholder="Institution"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -575,7 +581,7 @@ const ProfileBuild = ({
                       type="date"
                        value={formatDateForInput(watch(`education.${index}.startDate`))}
                       {...register(`education.${index}.startDate`)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
                     />
                   </div>
                   <div>
@@ -584,7 +590,7 @@ const ProfileBuild = ({
                       type="date"
                       value={formatDateForInput(watch(`education.${index}.endDate`))}
                       {...register(`education.${index}.endDate`)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
+                      className="w-full p-2 border border-gray-300 rounded-md bg-white"
                     />
                   </div>
                 </div>
@@ -592,12 +598,13 @@ const ProfileBuild = ({
                   <input
                     {...register(`education.${index}.coursework`)}
                     placeholder="Relevant Coursework"
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
                   />
                 </div>
               </div>
             </div>
           ))}
+          {/* Add More Education Button */}
           <button
             type="button"
             onClick={() => appendEducation({ 
@@ -614,8 +621,8 @@ const ProfileBuild = ({
         </section>
 
         {/* Skills Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Skills</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -624,7 +631,7 @@ const ProfileBuild = ({
               <input
                 {...register("skills.technical")}
                 placeholder="Add skills separated by commas"
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white"
                 onChange={(e) => {
                   const skills = e.target.value.split(',').map(skill => skill.trim());
                   setValue("skills.technical", skills);
@@ -638,7 +645,7 @@ const ProfileBuild = ({
               <input
                 {...register("skills.soft")}
                 placeholder="Add skills separated by commas"
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white"
                 onChange={(e) => {
                   const skills = e.target.value.split(',').map(skill => skill.trim());
                   setValue("skills.soft", skills);
@@ -649,33 +656,42 @@ const ProfileBuild = ({
         </section>
 
         {/* Certifications Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Certifications</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Certifications</h2>
           {certificationFields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <input
-                  {...register(`certifications.${index}.name`)}
-                  placeholder="Certification Name"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
+            <div key={field.id} className="p-4 border border-gray-200 rounded-md bg-gray-50 space-y-4 relative">
+              {/* Remove Button */}
+              {certificationFields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeCertification(index)}
+                  className="absolute top-2 right-2 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
+                  aria-label="Remove certification"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <input
+                    {...register(`certifications.${index}.name`)}
+                    placeholder="Certification Name"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                  />
+                </div>
+                <div>
+                  <input
+                    {...register(`certifications.${index}.year`)}
+                    placeholder="Year"
+                    className="w-full p-2 border border-gray-300 rounded-md bg-white"
+                  />
+                </div>
               </div>
-              <div>
-                <input
-                  {...register(`certifications.${index}.year`)}
-                  placeholder="Year"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => removeCertification(index)}
-                className="mt-2 px-4 py-2 text-sm text-red-600 hover:text-red-800"
-              >
-                - Remove Certification
-              </button>
             </div>
           ))}
+          {/* Add certification button */}
           <button
             type="button"
             onClick={() => appendCertification({ name: '', year: '' })}
@@ -686,13 +702,13 @@ const ProfileBuild = ({
         </section>
 
         {/* Languages Section */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700">Languages</h2>
+        <section className="space-y-4 bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-lg">
+          <h2 className="text-xl font-semibold text-gray-800">Languages</h2>
           <div>
             <input
               {...register("languages")}
               placeholder="Add languages separated by commas (e.g., English, Spanish)"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 border border-gray-300 rounded-md bg-white"
               onChange={(e) => {
                 const languages = e.target.value.split(',').map(lang => lang.trim());
                 setValue("languages", languages);
@@ -704,13 +720,16 @@ const ProfileBuild = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`w-full py-2 px-4 rounded-md transition-colors ${
-            isSubmitting ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
-          } text-white`}
+          className={`w-full py-3 px-4 rounded-xl transition-all duration-300 shadow-lg backdrop-blur-sm ${
+            isSubmitting 
+              ? 'bg-gray-400/80 cursor-not-allowed' 
+              : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-105'
+          } text-white font-medium`}
         >
           {isSubmitting ? 'Saving...' : 'Save Profile'}
         </button>
       </form>
+      </div>
     </div>
   );
 };

@@ -20,9 +20,114 @@
 }
 
 body {
-  @apply bg-gradient-to-br from-emerald-50 to-teal-100;
-  min-height: 100vh;
+  height: 600px;
+  max-height: 600px;
   margin: 0;
+  overflow: hidden;
+}
+
+/* Custom animations */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes gradient-y {
+  0%, 100% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+}
+
+@keyframes gradient-xy {
+  0%, 100% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility classes for animations */
+.animate-gradient-x {
+  background-size: 400% 400%;
+  animation: gradient-x 15s ease infinite;
+}
+
+.animate-gradient-y {
+  background-size: 400% 400%;
+  animation: gradient-y 15s ease infinite;
+}
+
+.animate-gradient-xy {
+  background-size: 400% 400%;
+  animation: gradient-xy 20s ease infinite;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Animation delays */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
 
 

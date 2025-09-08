@@ -23,9 +23,19 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
 
 
   return (
-    <div className="p-6 bg-gradient-to-br from-emerald-50 to-teal-100">
+    <div className="h-full flex flex-col p-6 overflow-y-auto relative">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 animate-gradient-x"></div>
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"></div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000"></div>
+      </div>
+      
+      {/* Content */}
+      <div className="relative z-10">
 
-      <h1 className="text-2xl font-light bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+      <h1 className="text-xl font-light bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
           Covlet
       </h1>
       
@@ -40,7 +50,7 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
           transition={{ duration: 0.5 }}
           onHoverStart={() => setIsHovered(true)}
           onHoverEnd={() => setIsHovered(false)}
-          className="w-20 h-20 mx-auto mb-6"
+          className="w-16 h-16 mx-auto mb-4"
         >
           <img
             src={floating_robot}
@@ -49,9 +59,9 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
           />
         </motion.div>
 
-        <h2 className="text-4xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">Welcome!</h2>
+        <h2 className="text-3xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">Welcome!</h2>
 
-        <p className="text-gray-600 mb-8">
+        <p className="text-gray-600 mb-6">
           Your AI-powered cover letter assistant that helps you stand out
         </p>
 
@@ -100,13 +110,13 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
           </button>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-6">
           <p className="text-sm text-gray-500">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>
 
-        <div className='mt-5'>
+        <div className='mt-4'>
           <p>Integrated with</p>
 
           <div className=" flex justify-center space-x-4 m-1">
@@ -138,6 +148,7 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
         </div>
 
       </motion.div>
+      </div>
     </div>
   );
 };

@@ -1,220 +1,200 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { brand_logo_2 } from "@/assets"
-import { Outlet, useNavigate, useLocation } from "react-router-dom"
+import { useState, ReactNode } from 'react';
+import { useLocation, NavLink } from "react-router-dom"
 
-const Layout = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const navigate = useNavigate();
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const location = useLocation();
-  const showBackButton = location.pathname !== '/';
+  
+  // console.log('Current location:', location.pathname);
+  
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    console.log('=== CLOSING MENU ===');
+    setIsMenuOpen(false);
+    console.log('Menu closed');
+    console.log('Current location:', location.pathname);
+  };
+  
   return (
-    <>
-      <div className="bg-transparent flex ">
-        
-        <button className="w-8" onClick={() => setIsHovered(true)} >
-          <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevrons-right-icon lucide-chevrons-right"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
-        </button>
-        
-        {
-          isHovered &&
-          (<div onMouseLeave={() => setIsHovered(false)} className="flex z-50 fixed h-screen w-14 flex-col justify-between border-e border-gray-100 bg-white">
-          <div>
-            <div className="inline-flex size-16 items-center justify-center">
-              <span className="grid size-10 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
-                L
-              </span>
-            </div>
-
-            <div className="border-t border-gray-100">
-              <div className="px-2">
-                <div className="py-4">
-                  <a
-                    href="#"
-                    className="t group relative flex justify-center rounded-sm bg-blue-50 px-2 py-1.5 text-blue-700"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="size-5 opacity-75"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-
-                    <span
-                      className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                    >
-                      General
-                    </span>
-                  </a>
-                </div>
-
-                <ul className="space-y-1 border-t border-gray-100 pt-4">
-                  <li>
-                    <a
-                      href="#"
-                      className="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-5 opacity-75"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-
-                      <span
-                        className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                      >
-                        Teams
-                      </span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-5 opacity-75"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                        />
-                      </svg>
-
-                      <span
-                        className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                      >
-                        Billing
-                      </span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-5 opacity-75"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                        />
-                      </svg>
-
-                      <span
-                        className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                      >
-                        Invoices
-                      </span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-5 opacity-75"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-
-                      <span
-                        className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
-                      >
-                        Account
-                      </span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+    <div className="h-full flex flex-col">
+      {/* Navigation Bar */}
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 px-4 py-3 flex-shrink-0 relative z-50">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/30 via-transparent to-teal-50/30 animate-gradient-x"></div>
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex items-center">
+            <h1 className="text-lg font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              Covlet
+            </h1>
           </div>
-
-          <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2">
-            <a
-              href="#"
-              className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+          
+          {/* Burger Menu Button */}
+          <div className="relative">
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label="Menu"
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-5 opacity-75"
+                className="w-5 h-5 text-gray-600"
                 fill="none"
-                viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth="2"
+                viewBox="0 0 24 24"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
-
-              <span
-                className="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+            </button>
+            
+            {/* Dropdown Menu */}
+            {isMenuOpen && (
+              <div 
+                className="absolute right-0 top-12 w-48 bg-white backdrop-blur-md border border-gray-200/50 rounded-lg shadow-xl z-[9999]"
+                onClick={(e) => {
+                  console.log('=== DROPDOWN CONTAINER CLICKED ===');
+                  console.log('Dropdown container event:', e);
+                  console.log('Stopping propagation to prevent overlay from closing menu');
+                  e.stopPropagation();
+                }}
               >
-                Logout
-              </span>
-            </a>
+                <div className="py-2">
+                  <NavLink
+                    to={"/"}
+                    onClick={(e) => {
+                      console.log('=== HOME NAVLINK CLICKED ===');
+                      console.log('Event:', e);
+                      e.stopPropagation(); // Prevent event from bubbling to overlay
+                      alert('Home NavLink clicked - check console!');
+                      closeMenu();
+                    }}
+                    className={({ isActive }) =>
+                      `block px-4 py-2 text-sm transition-colors ${
+                        isActive
+                          ? 'bg-emerald-50 text-emerald-700 border-r-2 border-emerald-500'
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`
+                    }
+                  >
+                    <div className="flex items-center">
+                      <svg
+                        className="w-4 h-4 mr-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        />
+                      </svg>
+                      Home
+                    </div>
+                  </NavLink>
+                  
+                  <NavLink
+                    to={"/profile"}
+                    data-testid="profile-navlink"
+                    onMouseEnter={() => console.log('Profile NavLink mouse enter')}
+                    onMouseLeave={() => console.log('Profile NavLink mouse leave')}
+                    onMouseDown={(e) => {
+                      console.log('=== PROFILE NAVLINK MOUSE DOWN ===');
+                      console.log('MouseDown event:', e);
+                    }}
+                    onClick={(e) => {
+                      console.log('=== PROFILE NAVLINK CLICKED ===');
+                      console.log('Event:', e);
+                      console.log('Event type:', e.type);
+                      console.log('Current target:', e.currentTarget);
+                      console.log('Target:', e.target);
+                      console.log('Button:', e.button);
+                      console.log('Buttons:', e.buttons);
+                      e.stopPropagation(); // Prevent event from bubbling to overlay
+                      alert('Profile NavLink clicked - check console!');
+                      closeMenu();
+                    }}
+                    className={({ isActive }) => {
+                      // console.log('Profile NavLink rendering, isActive:', isActive);
+                      return `block px-4 py-2 text-sm transition-colors cursor-pointer ${
+                        isActive
+                          ? 'bg-emerald-50 text-emerald-700 border-r-2 border-emerald-500'
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`;
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <svg
+                        className="w-4 h-4 mr-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      Profile
+                    </div>
+                  </NavLink>
+                  
+                  {/* Test regular div with onClick */}
+                  <div
+                    onClick={(e) => {
+                      console.log('=== TEST DIV CLICKED ===');
+                      e.stopPropagation(); // Prevent event from bubbling to overlay
+                      alert('Test div clicked!');
+                    }}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                  >
+                    Test Click (Regular Div)
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          </div>)
-        }
-        
-        <section className="ml-14">
-          <Outlet />
-        </section>
-        
         </div>
-      </>
-      )
-}
+      </nav>
+      
+      {/* Main Content */}
+      <div className="bg-transparent flex-1 overflow-hidden">
+        <section className="h-full overflow-y-auto">
+          {children}
+        </section>
+      </div>
+      
+      {/* Overlay to close menu when clicking outside */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 z-[1]"
+          onClick={(e) => {
+            console.log('=== OVERLAY CLICKED ===');
+            console.log('Event target:', e.target);
+            console.log('Current target:', e.currentTarget);
+            
+            // Only close if clicking directly on the overlay, not on dropdown content
+            if (e.target === e.currentTarget) {
+              closeMenu();
+            }
+          }}
+        />
+      )}
+    </div>
+  );
+};
 
-      export default Layout
+export default Layout;
