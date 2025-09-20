@@ -17,10 +17,7 @@ const Layout = ({ children }: LayoutProps) => {
   };
 
   const closeMenu = () => {
-    console.log('=== CLOSING MENU ===');
     setIsMenuOpen(false);
-    console.log('Menu closed');
-    console.log('Current location:', location.pathname);
   };
   
   return (
@@ -62,9 +59,6 @@ const Layout = ({ children }: LayoutProps) => {
               <div 
                 className="absolute right-0 top-12 w-48 bg-white backdrop-blur-md border border-gray-200/50 rounded-lg shadow-xl z-[9999]"
                 onClick={(e) => {
-                  console.log('=== DROPDOWN CONTAINER CLICKED ===');
-                  console.log('Dropdown container event:', e);
-                  console.log('Stopping propagation to prevent overlay from closing menu');
                   e.stopPropagation();
                 }}
               >
@@ -72,10 +66,7 @@ const Layout = ({ children }: LayoutProps) => {
                   <NavLink
                     to={"/"}
                     onClick={(e) => {
-                      console.log('=== HOME NAVLINK CLICKED ===');
-                      console.log('Event:', e);
                       e.stopPropagation(); // Prevent event from bubbling to overlay
-                      alert('Home NavLink clicked - check console!');
                       closeMenu();
                     }}
                     className={({ isActive }) =>
@@ -107,22 +98,8 @@ const Layout = ({ children }: LayoutProps) => {
                   <NavLink
                     to={"/profile"}
                     data-testid="profile-navlink"
-                    onMouseEnter={() => console.log('Profile NavLink mouse enter')}
-                    onMouseLeave={() => console.log('Profile NavLink mouse leave')}
-                    onMouseDown={(e) => {
-                      console.log('=== PROFILE NAVLINK MOUSE DOWN ===');
-                      console.log('MouseDown event:', e);
-                    }}
                     onClick={(e) => {
-                      console.log('=== PROFILE NAVLINK CLICKED ===');
-                      console.log('Event:', e);
-                      console.log('Event type:', e.type);
-                      console.log('Current target:', e.currentTarget);
-                      console.log('Target:', e.target);
-                      console.log('Button:', e.button);
-                      console.log('Buttons:', e.buttons);
                       e.stopPropagation(); // Prevent event from bubbling to overlay
-                      alert('Profile NavLink clicked - check console!');
                       closeMenu();
                     }}
                     className={({ isActive }) => {
@@ -155,9 +132,7 @@ const Layout = ({ children }: LayoutProps) => {
                   {/* Test regular div with onClick */}
                   <div
                     onClick={(e) => {
-                      console.log('=== TEST DIV CLICKED ===');
                       e.stopPropagation(); // Prevent event from bubbling to overlay
-                      alert('Test div clicked!');
                     }}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
                   >
@@ -182,10 +157,6 @@ const Layout = ({ children }: LayoutProps) => {
         <div
           className="fixed inset-0 z-[1]"
           onClick={(e) => {
-            console.log('=== OVERLAY CLICKED ===');
-            console.log('Event target:', e.target);
-            console.log('Current target:', e.currentTarget);
-            
             // Only close if clicking directly on the overlay, not on dropdown content
             if (e.target === e.currentTarget) {
               closeMenu();
