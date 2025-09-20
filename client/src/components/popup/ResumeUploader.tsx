@@ -1,14 +1,22 @@
-import React, { useState, useRef } from "react";
-import { uploadResume} from "@/services/server";
+import React, { useState, useRef, useEffect } from "react";
+import { uploadResume, addResumeDataToDB } from "@/services/server";
 import Spinner from "@/components/common/AsyncSpinner";
 import { useNavigate } from "react-router-dom";
+import { user } from "@/types";
 
 interface ResumeUploaderProps {
   onUploadSuccess?: (text: string) => void;
   onUploadError?: (error: string) => void;
+  isResumeAvailable: boolean;
+  setIsResumeAvailable: React.Dispatch<React.SetStateAction<boolean>>;
+  user: user;
 }
-
-const ResumeUploader: React.FC<ResumeUploaderProps> = () => {
+console.log("ResumeUploader component mounted",10)
+const ResumeUploader: React.FC<ResumeUploaderProps> = ({ 
+  isResumeAvailable, 
+  setIsResumeAvailable, 
+  user 
+}) => {
   const [fileName, setFileName] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,10 +49,25 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = () => {
     
 
     uploadResume(file)
-      .then((response) => {
+      .then(async (response) => {
         console.log("File uploaded successfully:", response);
         setFileName(file.name);
-        navigate("/profile",{state:{ resumeData: response }})
+        
+        // If resume is not available, call addResumeDataToDB to create new record
+        if (!isResumeAvailable) {
+          try {
+            console.log("Adding new resume data to DB...");
+            await addResumeDataToDB(response);
+            setIsResumeAvailable(true); // Update the availability state
+            console.log("Resume data added to DB successfully");
+          } catch (dbError) {
+            console.error("Error adding resume data to DB:", dbError);
+            setError("Resume uploaded but failed to save. Please try again.");
+            return; // Don't navigate if DB save failed
+          }
+        }
+        
+        navigate("/profile", { state: { resumeData: response } })
       })
       .catch((error) => {
         console.error("Error uploading file:", error);
@@ -70,6 +93,16 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = () => {
       handleFileChange({ target: fileInputRef.current } as any);
     }
   };
+
+  useEffect(() => {
+    console.log("ResumeUploader component mounted");
+    // Cleanup function to handle unmounting
+    return () => {
+      console.log("ResumeUploader component unmounted");
+    };
+  }, []);
+
+  console.log("hi resumeUploader")
 
   return (
     <div
