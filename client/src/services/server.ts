@@ -92,3 +92,28 @@ export async function getResumeDataFromDB(email: string) {
         throw new Error("Failed to fetch resume data from DB.");
     }
 }
+
+// API endpoint to delete resume data from the database
+export async function deleteResumeDataFromDB(email: string) {
+    try {
+        const options = {
+            url : `/resume/${email}`,
+            method: "DELETE",
+            baseURL: import.meta.env.WXT_SERVER_URL,
+            data: {
+                email: email
+            }
+        }
+        
+        const response = await axios.request(options)
+
+        if (response.status !== 200) {
+            throw new Error("Failed to delete resume data");
+        }
+
+    } catch (error) {
+        console.error("Error deleting resume data from DB:", error);
+        throw new Error("Failed to delete resume data from DB.");
+    }
+}
+     
