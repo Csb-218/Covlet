@@ -12,7 +12,7 @@ interface props{
 const Home = ({ setUser, user}: props) => {
 
   const [isResumeAvailable, setIsResumeAvailable] = React.useState<boolean>(false);
-
+  console.log("hi home")
   const handleLogout = () => {
     chrome.storage.local.remove(["user"], () => {
       setUser(null);
@@ -29,8 +29,7 @@ const Home = ({ setUser, user}: props) => {
         setIsResumeAvailable(false);
         console.error("Error fetching resume data:", error);
       });
-  }
-  , []);
+  }, [user.email]);
 
 
 
@@ -76,7 +75,11 @@ const Home = ({ setUser, user}: props) => {
                 <p className="text-sm text-red-700 font-medium">⚠ No resume data found</p>
                 <p className="text-xs text-red-600 mt-1">Upload your resume to get started</p>
               </div>
-              <ResumeUploader />
+              <ResumeUploader 
+                isResumeAvailable={isResumeAvailable}
+                setIsResumeAvailable={setIsResumeAvailable}
+                user={user}
+              />
             </div>
           }
         </div>
