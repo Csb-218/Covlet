@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addResumeDataToDB , getResumeDataFromDB , updateResumeDataInDB} from "@/services/server";
+import { getResumeDataFromDB , updateResumeDataInDB , deleteResumeDataFromDB} from "@/services/server";
 import { z } from 'zod';
 import { sample_resume_json } from "@/assets";
 import { IProfileSchema,user } from '@/types';
@@ -91,10 +91,14 @@ const ProfileBuild = ({
   setUser: React.Dispatch<React.SetStateAction<user | null>>;
   user: user;
 }) => {
-  // console.log('ProfileBuild component mounted');
+
+  console.log("Hi profile")
+  const location = useLocation();
+  const resume:IProfileSchema = location.state?.resumeData;
 
   const [isLoadingSample, setIsLoadingSample] = useState(false);
-  const [resumeData, setResumeData] = useState<IProfileSchema | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [resumeData, setResumeData] = useState<IProfileSchema | null>(resume);
 
   const navigate = useNavigate();
 
@@ -153,6 +157,22 @@ const ProfileBuild = ({
     name: "projects"
   });
 
+  // Stable handlers to prevent re-renders
+  const handleTechnicalSkillsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const skills = e.target.value.split(',').map(skill => skill.trim());
+    setValue("skills.technical", skills);
+  }, [setValue]);
+
+  const handleSoftSkillsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const skills = e.target.value.split(',').map(skill => skill.trim());
+    setValue("skills.soft", skills);
+  }, [setValue]);
+
+  const handleLanguagesChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const languages = e.target.value.split(',').map(lang => lang.trim());
+    setValue("languages", languages);
+  }, [setValue]);
+
   const loadSampleResume = () => {
     setIsLoadingSample(true);
     try {
@@ -205,16 +225,30 @@ const ProfileBuild = ({
     }
   };
 
-  useEffect(() => {
-      getResumeDataFromDB(user.email)
-        .then((response) => {
-          setResumeData(response);
-        })
-        .catch((error) => {
+  const onDelete = async() => {
+    try {
+      setIsDeleting(true);
+      const response = await deleteResumeDataFromDB(user.email);
+    }catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeleting(false);
+      navigate("/")
+  }
+}
 
-          console.error("Error fetching resume data:", error);
-        });
-  },[])
+  // Mount effect for logging and data fetching
+  useEffect(() => {
+    console.log('ProfileBuild component mounted');
+    
+    getResumeDataFromDB(user.email)
+      .then((response) => {
+        setResumeData(response);
+      })
+      .catch((error) => {
+        console.error("Error fetching resume data:", error);
+      });
+  }, [user.email])
 
   useEffect(() => {
     if (resumeData) {
@@ -225,13 +259,13 @@ const ProfileBuild = ({
         ...resumeData,
         experience: resumeData.experience.map(exp => ({
           ...exp,
-         startDate: new Date(exp.startDate),
-         endDate: exp.endDate ? new Date(exp.endDate) : null,
+        startDate: new Date(exp.startDate),
+        endDate: exp.endDate ? new Date(exp.endDate) : null,
         })),
         education: resumeData.education.map(edu => ({
           ...edu,
-          startDate: new Date(edu.startDate),
-          endDate: edu.endDate ? new Date(edu.endDate) : null,
+        startDate: new Date(edu.startDate),
+        endDate: edu.endDate ? new Date(edu.endDate) : null,
         }))
       };
 
@@ -270,8 +304,26 @@ const ProfileBuild = ({
       
       {/* Content */}
       <div className="p-4 space-y-6 relative z-10">
-        <div className="mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-gray-800">Edit Your Profile</h1>
+          <button
+            type="button"
+            onClick={onDelete}
+            disabled={isDeleting}
+            className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="Load sample resume"
+          >{
+            isDeleting?
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+            :
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          }
+            {/* <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16" />
+            </svg> */}
+          </button>
         </div>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -384,9 +436,7 @@ const ProfileBuild = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                     <input
                       type="date"
-                      value={formatDateForInput(watch(`experience.${index}.startDate`))}
                       {...register(`experience.${index}.startDate`)}
-                      // max={new Date().toISOString()}
                       className="w-full p-2 border border-gray-300 rounded-md bg-white"
                     />
                     {errors.experience?.[index]?.startDate && (
@@ -400,25 +450,20 @@ const ProfileBuild = ({
                     <div className="space-y-2">
                       <input
                         type="date"
-                        value={formatDateForInput(watch(`experience.${index}.endDate`))}
                         {...register(`experience.${index}.endDate`)}
-                        // min={watch(`experience.${index}.startDate`) ? (watch(`experience.${index}.startDate`) as Date).toISOString().split('T')[0] : ''}
-                        // max={new Date().toISOString().split('T')[0]}
-                        disabled={watch(`experience.${index}.isPresent`)}
-                        className={`w-full p-2 border border-gray-300 rounded-md ${
-                          watch(`experience.${index}.isPresent`) ? 'bg-gray-100' : 'bg-white'
-                        }`}
+                        className="w-full p-2 border border-gray-300 rounded-md bg-white"
                       />
                       <div className="flex items-center">
                         <input
                           type="checkbox"
-                          {...register(`experience.${index}.isPresent`)}
-                          className="h-4 w-4 text-blue-600 rounded border-gray-300"
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setValue(`experience.${index}.endDate`, null);
+                          {...register(`experience.${index}.isPresent`, {
+                            onChange: (e) => {
+                              if (e.target.checked) {
+                                setValue(`experience.${index}.endDate`, null);
+                              }
                             }
-                          }}
+                          })}
+                          className="h-4 w-4 text-blue-600 rounded border-gray-300"
                         />
                         <label className="ml-2 text-sm text-gray-600">
                           Present (Current)
@@ -579,7 +624,6 @@ const ProfileBuild = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                     <input
                       type="date"
-                       value={formatDateForInput(watch(`education.${index}.startDate`))}
                       {...register(`education.${index}.startDate`)}
                       className="w-full p-2 border border-gray-300 rounded-md bg-white"
                     />
@@ -588,7 +632,6 @@ const ProfileBuild = ({
                     <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                     <input
                       type="date"
-                      value={formatDateForInput(watch(`education.${index}.endDate`))}
                       {...register(`education.${index}.endDate`)}
                       className="w-full p-2 border border-gray-300 rounded-md bg-white"
                     />
@@ -632,10 +675,7 @@ const ProfileBuild = ({
                 {...register("skills.technical")}
                 placeholder="Add skills separated by commas"
                 className="w-full p-2 border border-gray-300 rounded-md bg-white"
-                onChange={(e) => {
-                  const skills = e.target.value.split(',').map(skill => skill.trim());
-                  setValue("skills.technical", skills);
-                }}
+                onChange={handleTechnicalSkillsChange}
               />
             </div>
             <div>
@@ -646,10 +686,7 @@ const ProfileBuild = ({
                 {...register("skills.soft")}
                 placeholder="Add skills separated by commas"
                 className="w-full p-2 border border-gray-300 rounded-md bg-white"
-                onChange={(e) => {
-                  const skills = e.target.value.split(',').map(skill => skill.trim());
-                  setValue("skills.soft", skills);
-                }}
+                onChange={handleSoftSkillsChange}
               />
             </div>
           </div>
@@ -709,10 +746,7 @@ const ProfileBuild = ({
               {...register("languages")}
               placeholder="Add languages separated by commas (e.g., English, Spanish)"
               className="w-full p-2 border border-gray-300 rounded-md bg-white"
-              onChange={(e) => {
-                const languages = e.target.value.split(',').map(lang => lang.trim());
-                setValue("languages", languages);
-              }}
+              onChange={handleLanguagesChange}
             />
           </div>
         </section>
