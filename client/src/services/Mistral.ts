@@ -1,29 +1,4 @@
-import {Database} from "../types/supabase"
-import { createClient } from '@supabase/supabase-js';
-const db_url = import.meta.env.WXT_SUPABASE_URL!
-const db_api_key = import.meta.env.WXT_SUPABASE_API_KEY!
-const supabase = createClient<Database>(`${db_url}`, `${db_api_key}`)
 
-export async function getCandidate(email:string) {
-
-  try {
-    // console.log(supabase,db_url,db_api_key)
-
-    const { data , error } = await supabase
-      .from('candidates')
-      .select()
-      .eq('email', email)
-
-    // alert(error+'api')
-
-    // console.error(error)
-    return data
-
-  } catch (error) {
-    console.error(error)
-  }
-
-}
 
 export async function generateChatResponse(data: any, JD: string, client: any):Promise<string> {
 
