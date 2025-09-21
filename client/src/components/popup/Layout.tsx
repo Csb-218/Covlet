@@ -128,16 +128,7 @@ const Layout = ({ children }: LayoutProps) => {
                       Profile
                     </div>
                   </NavLink>
-                  
-                  {/* Test regular div with onClick */}
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent event from bubbling to overlay
-                    }}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
-                  >
-                    Test Click (Regular Div)
-                  </div>
+
                 </div>
               </div>
             )}
