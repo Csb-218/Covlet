@@ -116,7 +116,9 @@ export async function returnResumeFilledSchema(markdown:string){
                     role:"user",
                     content: `Please fill the resume schema with the information provided in the markdown.Your output should be an instance of a JSON object following this schema: ${{ profileSchema }}.
 
-                    Note : For languages add only linguistic languages like English , Hindi , French , German , Chinese etc. 
+                    Note : 
+                    • For languages add only linguistic languages like English , Hindi , French , German , Chinese etc. 
+                    • If any field is missing leave it blank
                     
                     `
                 }
