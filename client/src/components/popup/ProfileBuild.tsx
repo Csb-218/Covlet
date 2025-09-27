@@ -158,11 +158,9 @@ const ProfileBuild = ({
 }) => {
 
   console.log("Hi profile");
-  const location = useLocation();
-  const resume: IProfileSchema = location.state?.resumeData;
 
   const [isDeleting, setIsDeleting] = useState(false);
-  const [resumeData, setResumeData] = useState<IProfileSchema | null>(resume);
+  const [resumeData, setResumeData] = useState<IProfileSchema | null>(null);
 
   const navigate = useNavigate();
 
@@ -365,18 +363,18 @@ const ProfileBuild = ({
   useEffect(() => {
     console.log("ProfileBuild component mounted");
 
-    getResumeDataFromDB(user.email)
-      .then((response) => {
-        setResumeData(response);
-      })
-      .catch((error) => {
-        console.error("Error fetching resume data:", error);
-      });
+     chrome.storage.local.get("user", (result) => {
+      if (result.user) {
+        setResumeData(result.user.resume)
+      }
+    });
+
+
+
   }, [user.email]);
 
   // fetch data and fill the form
   useEffect(() => {
-    // fetch data and fill the form
     if (resumeData) {
       console.log("Resume Data:", resumeData);
       try {
