@@ -3,6 +3,8 @@ import { user } from "../../types";
 import ResumeUploader from "./ResumeUploader";
 import { getResumeDataFromDB } from "@/services/server";
 import { NavLink } from "react-router-dom";
+import {updateLocal} from "@/utils/helpers";
+
 
 interface props{
   setUser: React.Dispatch<React.SetStateAction<user | null>>;
@@ -24,21 +26,8 @@ const Home = ({ setUser, user}: props) => {
     try{
       const response = await getResumeDataFromDB(user.email);
       setIsResumeAvailable(true);
-
-      const userObject = await chrome.storage.local.get("user");
-
-       const updatedUser = {
-          ...userObject.user,
-          resume: response,
-        };
-
-      chrome.storage.local.set({ user: updatedUser }, () => {
-          if (chrome.runtime.lastError) {
-            console.error("Storage error:", chrome.runtime.lastError);
-          } else {
-            console.log("Resume data stored in user object successfully");
-          }
-        });
+ 
+      await updateLocal(response)
         
     }catch(error){
         setIsResumeAvailable(false);
@@ -82,7 +71,7 @@ const Home = ({ setUser, user}: props) => {
           >
             Covlet
           </span>
-          - An AI text generator
+          - your personal AI job application assistant.
         </h2>
     <NavLink 
       to={"/profile"}
