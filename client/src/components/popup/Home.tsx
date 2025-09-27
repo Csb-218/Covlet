@@ -19,20 +19,43 @@ const Home = ({ setUser, user}: props) => {
     });
   };
 
-  React.useEffect(() => {
-    getResumeDataFromDB(user.email)
-      .then((response) => {
-        setIsResumeAvailable(true);
-        console.log("Resume data fetched successfully:", response);
-      })
-      .catch((error) => {
+
+  async function getResumeAndStore(){
+    try{
+      const response = await getResumeDataFromDB(user.email);
+      setIsResumeAvailable(true);
+
+      const userObject = await chrome.storage.local.get("user");
+
+       const updatedUser = {
+          ...userObject.user,
+          resume: response,
+        };
+
+      chrome.storage.local.set({ user: updatedUser }, () => {
+          if (chrome.runtime.lastError) {
+            console.error("Storage error:", chrome.runtime.lastError);
+          } else {
+            console.log("Resume data stored in user object successfully");
+          }
+        });
+        
+    }catch(error){
         setIsResumeAvailable(false);
         console.error("Error fetching resume data:", error);
-      });
+    };
+  }
+
+  React.useEffect(() => {
+
+    if(!user.resume){
+      getResumeAndStore();
+    }else{
+      setIsResumeAvailable(true);
+    }
+    
+
   }, [user.email]);
-
-
-
 
 
   return (
