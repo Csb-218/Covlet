@@ -1,5 +1,5 @@
 import { useState, ReactNode } from 'react';
-import { useLocation, NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,10 +7,6 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const location = useLocation();
-  
-  // console.log('Current location:', location.pathname);
   
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
