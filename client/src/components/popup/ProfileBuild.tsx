@@ -424,7 +424,7 @@ const ProfileBuild = ({
   const languagesValue = (watch("languages") || []).join(", ");
 
   return (
-    <div className="h-full overflow-y-auto relative container">
+    <div className="h-full relative container">
      
       <div className="p-4 space-y-6 relative z-10">
         <div className="mb-4 flex items-center justify-between">

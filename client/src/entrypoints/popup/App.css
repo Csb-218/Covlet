@@ -11,12 +11,6 @@
   flex-direction: column;
 }
 
-.root::-webkit-scrollbar{
-  display: none;
-}
 
-.app::-webkit-scrollbar{
-  display: none;
-}
 
 

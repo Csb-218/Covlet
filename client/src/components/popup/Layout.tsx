@@ -137,10 +137,10 @@ const Layout = ({ children }: LayoutProps) => {
       </nav>
       
       {/* Main Content */}
-      <div className="bg-transparent flex-1 overflow-hidden">
-        <section className="h-full overflow-y-auto">
+      <div className="bg-transparent flex-1 h-full overflow-y-auto no-scrollbar">
+        
           {children}
-        </section>
+        
       </div>
       
       {/* Overlay to close menu when clicking outside */}
