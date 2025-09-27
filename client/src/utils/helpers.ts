@@ -33,3 +33,23 @@ export const formatDateForInput = (date: Date | null | string): string => {
     const d = new Date(date);
     return d.toISOString().split('T')[0];
 };
+import type { IProfileSchema } from "@/types";
+
+export const updateLocal = async(resume:IProfileSchema) =>{
+
+    const userObject = await chrome.storage.local.get("user");
+
+       const updatedUser = {
+          ...userObject.user,
+          resume: resume,
+        };
+
+      chrome.storage.local.set({ user: updatedUser }, () => {
+          if (chrome.runtime.lastError) {
+            console.error("Storage error:", chrome.runtime.lastError);
+          } else {
+            console.log("Resume data stored in user object successfully");
+          }
+        });
+
+}
