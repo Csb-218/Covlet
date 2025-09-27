@@ -8,7 +8,7 @@ export interface JD {
     messageBox: HTMLElement
 }
 
-export type user = {
+export interface user {
     email: string,
     family_name: string,
     given_name: string,
@@ -16,6 +16,7 @@ export type user = {
     name: string,
     picture: string,
     verified_email: boolean
+    resume: Partial<IProfileSchema> 
 }
 
 export interface IProfileSchema {
