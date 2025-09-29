@@ -66,7 +66,7 @@ function App() {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col" data-testid="app">
       <MemoryRouter>
         <Layout>
           <Routes>
