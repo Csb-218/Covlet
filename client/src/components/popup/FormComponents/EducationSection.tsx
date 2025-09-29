@@ -34,19 +34,18 @@ const EducationSection: React.FC<EducationSectionProps> = ({
         <button
           type="button"
           onClick={addEducation}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2"
+          className="px-2 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors duration-200 "
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Add Education
         </button>
       </div>
       
       {fields.map((field, index) => (
         <div key={field.id} className="bg-white/60 rounded-lg p-4 border border-gray-200 space-y-4">
           <div className="flex justify-between items-start">
-            <h3 className="text-lg font-medium text-gray-700">Education #{index + 1}</h3>
+            <h3 className="text-lg font-medium text-gray-700">Education {index + 1}</h3>
             {fields.length > 1 && (
               <button
                 type="button"
@@ -182,13 +181,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({
       
       {fields.length > 0 && (
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <svg className="w-5 h-5 text-green-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="">
+            <div>
+              <h4 className="text-sm text-left flex font-medium text-green-800">
+                 <svg className="w-5 h-5 text-green-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <div>
-              <h4 className="text-sm font-medium text-green-800">Education Tips</h4>
-              <ul className="text-sm text-green-700 mt-1 space-y-1">
+                Education Tips</h4>
+              <ul className="text-xs text-left text-green-700 mt-1 space-y-1">
                 <li>• List education in reverse chronological order (most recent first)</li>
                 <li>• Include GPA only if it's 3.5 or higher</li>
                 <li>• Mention relevant coursework that aligns with your career goals</li>

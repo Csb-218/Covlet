@@ -32,19 +32,18 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         <button
           type="button"
           onClick={addProject}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2"
+          className="px-2 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors duration-200 "
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Add Project
         </button>
       </div>
       
       {fields.map((field, index) => (
         <div key={field.id} className="bg-white/60 rounded-lg p-4 border border-gray-200 space-y-4">
           <div className="flex justify-between items-start">
-            <h3 className="text-lg font-medium text-gray-700">Project #{index + 1}</h3>
+            <h3 className="text-lg font-medium text-gray-700">Project {index + 1}</h3>
             {fields.length > 1 && (
               <button
                 type="button"
@@ -144,17 +143,19 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({
       
       {fields.length > 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <svg className="w-5 h-5 text-blue-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="">
+            
+            <div>
+              <h4 className="text-sm text-left flex font-medium text-blue-800">
+                <svg className="w-5 h-5 text-blue-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <div>
-              <h4 className="text-sm font-medium text-blue-800">Project Tips</h4>
-              <ul className="text-sm text-blue-700 mt-1 space-y-1">
-                <li>• Include both personal and professional projects</li>
-                <li>• Mention specific technologies and frameworks used</li>
-                <li>• Quantify impact when possible (users, performance improvements, etc.)</li>
-                <li>• Add links to GitHub repositories or live demos</li>
+                Project Tips</h4>
+              <ul className="text-xs text-left text-blue-700 mt-1 space-y-1">
+                <li>• Include both personal and professional projects.</li>
+                <li>• Mention specific technologies and frameworks used.</li>
+                <li>• Quantify impact when possible (users, performance improvements, etc.).</li>
+                <li>• Add links to GitHub repositories or live demos.</li>
               </ul>
             </div>
           </div>
