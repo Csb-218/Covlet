@@ -23,14 +23,14 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
 
 
   return (
-    <div className="h-full flex flex-col p-6 overflow-y-auto relative">
+    <div className="h-full flex flex-col p-6 overflow-y-auto relative bg-radial-[at_50%_75%] from-emerald-100 via-teal-200 to-cyan-300 to-90%">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 animate-gradient-x"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 animate-gradient-x"></div>
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"></div>
-        <div className="absolute top-0 right-0 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob animation-delay-4000"></div>
-      </div>
+        <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 "></div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 "></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 "></div>
+      </div> */}
       
       {/* Content */}
       <div className="relative z-10">
@@ -75,10 +75,10 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
           >
 
 
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2" data-testid="login-button">
               {
                 isLoggingState ?
-                  <SpinnerXlBasicHalf />
+                  <SpinnerXlBasicHalf data-testid="spinner"/>
 
                   :
                   <>
@@ -136,13 +136,13 @@ const Landing = ({handleLogin , isLoggingState}:props) => {
               whileHover={{ scale: 1.2, rotate: 10 }}
               className="p-2 bg-white rounded-full shadow-md cursor-pointer"
             >
-              <img src={internshala} alt="LinkedIn" className="w-6 h-6" />
+              <img src={internshala} alt="Internshala" className="w-6 h-6" />
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.2, rotate: -10 }}
               className="p-2 bg-white rounded-full shadow-md cursor-pointer"
             >
-              <img src={gmail} alt="Wellfound" className="w-6 h-6" />
+              <img src={gmail} alt="Gmail" className="w-6 h-6" />
             </motion.div>
           </div>
         </div>

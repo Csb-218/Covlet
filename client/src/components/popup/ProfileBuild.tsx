@@ -208,7 +208,7 @@ const ProfileBuild = ({
   }, [resumeData, reset, setValue]);
 
   return (
-    <div className="h-full relative container">
+    <div className="h-auto relative bg-emerald-200 ">
       <div className="p-4 space-y-6 relative z-10">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
