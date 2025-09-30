@@ -44,7 +44,7 @@ const Home = ({ setUser, user}: props) => {
     }
     
 
-  }, [user.email]);
+  }, [user]);
 
 
   return (
@@ -59,7 +59,7 @@ const Home = ({ setUser, user}: props) => {
       
       {/* Content */}
       <div className="flex-1 relative z-10">
-        <p id="div" className="text-3xl mb-4">
+        <p data-testid="greeting" id="div" className="text-3xl mb-4">
           Hello {user.given_name} !
         </p>
         <h2 className="mb-4">
@@ -74,6 +74,7 @@ const Home = ({ setUser, user}: props) => {
           - your personal AI job application assistant.
         </h2>
     <NavLink 
+      data-testid="profile-navlink"
       to={"/profile"}
       className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-lg shadow-lg hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 backdrop-blur-sm border border-white/20"
     >
@@ -110,6 +111,8 @@ const Home = ({ setUser, user}: props) => {
         <div className="flex items-center justify-between bg-white/60 backdrop-blur-sm rounded-lg p-2 border border-white/30">
           <p className="text-xs text-gray-600">{user.email}</p>
           <button
+            type="button"
+            data-testid="logout-button"
             onClick={handleLogout}
             className="text-xs text-red-500 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50/80 transition-colors backdrop-blur-sm"
           >

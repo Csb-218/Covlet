@@ -112,6 +112,7 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({
     >
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-5 text-center transition-all duration-300 hover:border-gray-600">
         <input
+          data-testid="resume-input"
           type="file"
           accept=".pdf"
           onChange={handleFileChange}

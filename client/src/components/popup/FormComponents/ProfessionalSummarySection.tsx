@@ -18,8 +18,7 @@ const PersonalInformationSection: React.FC<PersonalInformationSectionProps> = ({
         <div>
           <textarea
             {...register("summary")}
-            
-            placeholder="Full Name"
+            placeholder="I am a skilled software developer with 5 years of experience in full-stack development..."
             className="w-full p-2 border border-gray-300 rounded-md bg-white focus:ring-2 focus:ring-blue-500"
           />
           {errors.personal?.name && (
